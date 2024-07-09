@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Headers from './components/Headers';
 import HeaderTable from './components/HeaderTable';
 import DataTable from './components/DataTable';
+import WeatherIndicator from './components/WeatherIndicator';
 
 function App() {
   const [headers, setHeaders] = useState([]);
@@ -56,6 +57,7 @@ function App() {
     <div className="w-full min-h-screen p-4 font-sans">
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-blue-700">Weather Data</h1>
       <Headers headers={headers} />
+      {data.length > 0 && headers.length > 0 && <WeatherIndicator latestData={data[0]} headers={headers[1]} />}
       <div className="w-full max-h-[80vh] overflow-auto border shadow-lg">
         <table className="min-w-full table-auto text-xs">
           <HeaderTable headers={headers} sortConfig={sortConfig} onSort={handleSort} />
