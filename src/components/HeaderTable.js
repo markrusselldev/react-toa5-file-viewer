@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 
 const HeaderTable = ({ headers, sortConfig, onSort }) => {
   const getClassNamesFor = (name) => {
@@ -6,6 +7,20 @@ const HeaderTable = ({ headers, sortConfig, onSort }) => {
       return;
     }
     return sortConfig.key === name ? sortConfig.direction : undefined;
+  };
+
+  const getIconFor = (name) => {
+    if (!sortConfig) {
+      return <FaSort />;
+    }
+    if (sortConfig.key === name) {
+      if (sortConfig.direction === 'ascending') {
+        return <FaSortUp />;
+      } else {
+        return <FaSortDown />;
+      }
+    }
+    return <FaSort />;
   };
 
   if (!headers[1] || !headers[2] || !headers[3]) {
@@ -20,9 +35,12 @@ const HeaderTable = ({ headers, sortConfig, onSort }) => {
           <th
             key={index}
             onClick={() => onSort({ key: header, direction: sortConfig.direction === 'ascending' ? 'descending' : 'ascending' })}
-            className={`p-2 ${getClassNamesFor(header)}`}
+            className={`p-2 cursor-pointer ${getClassNamesFor(header)}`}
           >
-            {header}
+            <div className="flex items-center justify-center">
+              {header}
+              <span className="ml-1">{getIconFor(header)}</span>
+            </div>
           </th>
         ))}
       </tr>
@@ -30,7 +48,9 @@ const HeaderTable = ({ headers, sortConfig, onSort }) => {
       <tr className="bg-blue-400 text-blue-900 text-xs sticky top-8 z-10">
         {headers[2].map((header, index) => (
           <th key={index} className="p-2">
-            {header}
+            <div className="flex items-center justify-center">
+              {header}
+            </div>
           </th>
         ))}
       </tr>
@@ -38,7 +58,9 @@ const HeaderTable = ({ headers, sortConfig, onSort }) => {
       <tr className="bg-blue-300 text-blue-800 text-xs sticky top-16 z-10">
         {headers[3].map((header, index) => (
           <th key={index} className="p-2">
-            {header}
+            <div className="flex items-center justify-center">
+              {header}
+            </div>
           </th>
         ))}
       </tr>
