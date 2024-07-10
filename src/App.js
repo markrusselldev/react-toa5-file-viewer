@@ -66,7 +66,7 @@ function App() {
         )}
       </div>
       {headers.length > 0 && (
-        <div className="mt-4 text-gray-700">
+        <div className="mt-4 text-gray-500 text-sm sm:text-xs">
           <span className="font-bold">Environment: </span>
           {headers[0].join(', ')}
         </div>
