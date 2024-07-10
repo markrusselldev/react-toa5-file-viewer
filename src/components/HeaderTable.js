@@ -15,7 +15,7 @@ const HeaderTable = ({ headers, sortConfig, onSort }) => {
   return (
     <thead>
       {/* Second Header Row */}
-      <tr className="bg-blue-500 text-white">
+      <tr className="bg-blue-500 text-white sticky top-0 z-10">
         {headers[1].map((header, index) => (
           <th
             key={index}
@@ -27,7 +27,7 @@ const HeaderTable = ({ headers, sortConfig, onSort }) => {
         ))}
       </tr>
       {/* Third Header Row */}
-      <tr className="bg-blue-400 text-blue-900 text-xs">
+      <tr className="bg-blue-400 text-blue-900 text-xs sticky top-8 z-10">
         {headers[2].map((header, index) => (
           <th key={index} className="p-2">
             {header}
@@ -35,7 +35,7 @@ const HeaderTable = ({ headers, sortConfig, onSort }) => {
         ))}
       </tr>
       {/* Fourth Header Row */}
-      <tr className="bg-blue-300 text-blue-800 text-xs">
+      <tr className="bg-blue-300 text-blue-800 text-xs sticky top-16 z-10">
         {headers[3].map((header, index) => (
           <th key={index} className="p-2">
             {header}
