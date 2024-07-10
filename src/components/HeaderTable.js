@@ -1,66 +1,48 @@
 import React from 'react';
-import { FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 
 const HeaderTable = ({ headers, sortConfig, onSort }) => {
-  if (headers.length < 4) {
-    return null; // Return null if headers array doesn't have enough rows
+  const getClassNamesFor = (name) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === name ? sortConfig.direction : undefined;
+  };
+
+  if (!headers[1] || !headers[2] || !headers[3]) {
+    return null; // Ensure headers are defined before rendering
   }
 
-  const [, header2, header3, header4] = headers;
-
-  const getSortIcon = (column) => {
-    if (sortConfig.key !== column) {
-      return <FaSort />;
-    }
-    if (sortConfig.direction === 'ascending') {
-      return <FaSortUp />;
-    }
-    return <FaSortDown />;
-  };
-
-  const handleSort = (column) => {
-    let direction = 'ascending';
-    if (sortConfig.key === column && sortConfig.direction === 'ascending') {
-      direction = 'descending';
-    }
-    onSort({ key: column, direction });
-  };
-
   return (
-    <>
-      <thead>
-        <tr>
-          {header2.map((header, index) => (
-            <th
-              key={index}
-              className="border px-2 py-1 bg-blue-500 text-white text-xs sm:text-sm md:text-base cursor-pointer"
-              onClick={() => handleSort(header)}
-            >
-              <div className="flex items-center justify-between">
-                {header}
-                {getSortIcon(header)}
-              </div>
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        <tr className="bg-blue-200 text-xs text-gray-700">
-          {header3.map((header, index) => (
-            <td key={index} className="border px-2 py-1">
-              {header}
-            </td>
-          ))}
-        </tr>
-        <tr className="bg-blue-200 text-xs text-gray-700">
-          {header4.map((header, index) => (
-            <td key={index} className="border px-2 py-1">
-              {header}
-            </td>
-          ))}
-        </tr>
-      </tbody>
-    </>
+    <thead>
+      {/* Second Header Row */}
+      <tr className="bg-gray-200 sticky top-0 z-20">
+        {headers[1].map((header, index) => (
+          <th
+            key={index}
+            onClick={() => onSort({ key: header, direction: sortConfig.direction === 'ascending' ? 'descending' : 'ascending' })}
+            className={`p-2 ${getClassNamesFor(header)}`}
+          >
+            {header}
+          </th>
+        ))}
+      </tr>
+      {/* Third Header Row */}
+      <tr className="bg-gray-100 sticky top-[2rem] z-10">
+        {headers[2].map((header, index) => (
+          <th key={index} className="p-2 text-sm text-gray-600">
+            {header}
+          </th>
+        ))}
+      </tr>
+      {/* Fourth Header Row */}
+      <tr className="bg-gray-50 sticky top-[4rem] z-10">
+        {headers[3].map((header, index) => (
+          <th key={index} className="p-2 text-xs text-gray-500">
+            {header}
+          </th>
+        ))}
+      </tr>
+    </thead>
   );
 };
 
