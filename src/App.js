@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import HeaderTable from './components/HeaderTable';
-import DataTable from './components/DataTable';
-import WeatherIndicator from './components/WeatherIndicator';
+import CurrentConditions from './components/CurrentConditions';
+import RecentTrends from './components/RecentTrends';
+import FullDataTable from './components/FullDataTable';
 
 function App() {
   const [headers, setHeaders] = useState([]);
   const [data, setData] = useState([]);
-  const [sortConfig, setSortConfig] = useState({ key: '', direction: 'ascending' });
+  const [showFullData, setShowFullData] = useState(false);
 
   useEffect(() => {
     fetch('/api/SkiSF_MetData.dat')
@@ -29,74 +29,29 @@ function App() {
       .catch(error => console.error('Error reading file:', error));
   }, []);
 
-  const sortedData = React.useMemo(() => {
-    let sortableData = [...data];
-    if (sortConfig.key) {
-      const columnIndex = headers[1].indexOf(sortConfig.key);
-
-      sortableData.sort((a, b) => {
-        let aValue = a[columnIndex];
-        let bValue = b[columnIndex];
-
-        // Attempt to parse as dates first
-        let aDate = Date.parse(aValue);
-        let bDate = Date.parse(bValue);
-
-        if (!isNaN(aDate) && !isNaN(bDate)) {
-          aValue = new Date(aDate);
-          bValue = new Date(bDate);
-        } else {
-          // Attempt to parse as numbers
-          aValue = parseFloat(aValue);
-          bValue = parseFloat(bValue);
-
-          // If parseFloat fails (returns NaN), treat as strings
-          if (isNaN(aValue)) {
-            aValue = a[columnIndex];
-          }
-          if (isNaN(bValue)) {
-            bValue = b[columnIndex];
-          }
-        }
-
-        if (aValue < bValue) {
-          return sortConfig.direction === 'ascending' ? -1 : 1;
-        }
-        if (aValue > bValue) {
-          return sortConfig.direction === 'ascending' ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sortableData;
-  }, [data, headers, sortConfig]);
-
-  const handleSort = (key) => {
-    let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
-    }
-    setSortConfig({ key, direction });
+  const toggleFullData = () => {
+    setShowFullData(!showFullData);
   };
 
   return (
     <div className="w-full min-h-screen p-4 font-sans">
-      {data.length > 0 && headers.length > 0 && <WeatherIndicator latestData={data[0]} headers={headers[1]} />}
-      <div className="w-full h-[74vh] overflow-x-auto overflow-y-auto border shadow-lg mt-4">
-        {headers.length > 0 && (
-          <div className="overflow-x-auto h-full">
-            <table className="min-w-full table-auto text-xs">
-              <HeaderTable headers={headers} sortConfig={sortConfig} onSort={handleSort} />
-              <DataTable data={sortedData} />
-            </table>
+      {data.length > 0 && headers.length > 0 && (
+        <>
+          <CurrentConditions latestData={data[0]} headers={headers[1]} />
+          <RecentTrends data={data.slice(0, 12)} headers={headers[1]} />
+          <div className="flex items-center justify-between mt-4">
+            <div className="text-gray-500 text-sm">
+              <strong>Environment:</strong> {headers[0].join(', ')}
+            </div>
+            <button
+              onClick={toggleFullData}
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+            >
+              {showFullData ? 'Hide Full Data' : 'Show Full Data'}
+            </button>
           </div>
-        )}
-      </div>
-      {headers.length > 0 && (
-        <div className="mt-4 text-gray-500 text-sm sm:text-xs">
-          <span className="font-bold">Environment: </span>
-          {headers[0].join(', ')}
-        </div>
+          {showFullData && <FullDataTable data={data} headers={headers} />}
+        </>
       )}
     </div>
   );

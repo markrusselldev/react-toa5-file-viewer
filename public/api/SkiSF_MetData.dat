@@ -1,6 +1,6 @@
 "TOA5","RF407_CR1000","CR1000","69096","CR1000.Std.27.04","CPU:SkiSF_Met_Apr2024.CR1","46595","SkiSF_Met"
 "TIMESTAMP","RECORD","AirTF_Max","AirTF_Min","AirTF_Avg","WC_F_Avg","WS_mph_Max","WS_mph_Min","WS_mph_Avg","WindDir","RH","DP_F_Avg","BP_inHg_Avg","BattV","PanelTemp_F"
-"TS","RN","캟","캟","캟","캟","miles/hour","miles/hour","miles/hour","Degrees","%","캟","inHg","Volts","캟"
+"TS","RN","째F","째F","째F","째F","miles/hour","miles/hour","miles/hour","Degrees","%","째F","inHg","Volts","째F"
 "","","Max","Min","Avg","Avg","Max","Min","Avg","Smp","Smp","Avg","Avg","Smp","Smp"
 "2024-04-06 13:30:00",0,10.87,10.74,10.78,0.553,12.09,0,7.875,302.5,88.1,7.958,28.69,14.15,-10.47
 "2024-04-06 13:45:00",0,10.01,9.76,9.86,-7.825,29.08,0,20.19,287.7,87.4,6.911,29.26,14.15,-10.42
