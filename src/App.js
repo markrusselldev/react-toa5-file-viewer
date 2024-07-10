@@ -9,7 +9,7 @@ function App() {
   const [sortConfig, setSortConfig] = useState({ key: '', direction: 'ascending' });
 
   useEffect(() => {
-    fetch('/api/TOA5-example.dat')
+    fetch('/api/SkiSF_MetData.dat')
       .then(response => response.text())
       .then(text => {
         const lines = text.split('\n');
