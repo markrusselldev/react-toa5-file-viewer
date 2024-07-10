@@ -55,12 +55,14 @@ function App() {
   return (
     <div className="w-full min-h-screen p-4 font-sans">
       {data.length > 0 && headers.length > 0 && <WeatherIndicator latestData={data[0]} headers={headers[1]} />}
-      <div className="w-full max-h-[74vh] overflow-auto border shadow-lg mt-4">
+      <div className="w-full h-[74vh] overflow-hidden border shadow-lg mt-4">
         {headers.length > 0 && (
-          <table className="min-w-full table-auto text-xs">
-            <HeaderTable headers={headers} sortConfig={sortConfig} onSort={handleSort} />
-            <DataTable data={sortedData} />
-          </table>
+          <div className="overflow-x-auto overflow-y-auto h-full">
+            <table className="min-w-full table-auto text-xs">
+              <HeaderTable headers={headers} sortConfig={sortConfig} onSort={handleSort} />
+              <DataTable data={sortedData} />
+            </table>
+          </div>
         )}
       </div>
       {headers.length > 0 && (
