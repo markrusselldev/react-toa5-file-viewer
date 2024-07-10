@@ -34,7 +34,7 @@ const HeaderTable = ({ headers, sortConfig, onSort }) => {
         {headers[1].map((header, index) => (
           <th
             key={index}
-            onClick={() => onSort({ key: header, direction: sortConfig.direction === 'ascending' ? 'descending' : 'ascending' })}
+            onClick={() => onSort(header)}
             className={`p-2 cursor-pointer ${getClassNamesFor(header)}`}
           >
             <div className="flex items-center justify-center">

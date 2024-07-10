@@ -32,10 +32,33 @@ function App() {
   const sortedData = React.useMemo(() => {
     let sortableData = [...data];
     if (sortConfig.key) {
+      const columnIndex = headers[1].indexOf(sortConfig.key);
+
       sortableData.sort((a, b) => {
-        const aValue = a[headers[1].indexOf(sortConfig.key)];
-        const bValue = b[headers[1].indexOf(sortConfig.key)];
-        
+        let aValue = a[columnIndex];
+        let bValue = b[columnIndex];
+
+        // Attempt to parse as dates first
+        let aDate = Date.parse(aValue);
+        let bDate = Date.parse(bValue);
+
+        if (!isNaN(aDate) && !isNaN(bDate)) {
+          aValue = new Date(aDate);
+          bValue = new Date(bDate);
+        } else {
+          // Attempt to parse as numbers
+          aValue = parseFloat(aValue);
+          bValue = parseFloat(bValue);
+
+          // If parseFloat fails (returns NaN), treat as strings
+          if (isNaN(aValue)) {
+            aValue = a[columnIndex];
+          }
+          if (isNaN(bValue)) {
+            bValue = b[columnIndex];
+          }
+        }
+
         if (aValue < bValue) {
           return sortConfig.direction === 'ascending' ? -1 : 1;
         }
@@ -48,8 +71,12 @@ function App() {
     return sortableData;
   }, [data, headers, sortConfig]);
 
-  const handleSort = (sortConfig) => {
-    setSortConfig(sortConfig);
+  const handleSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
   };
 
   return (
